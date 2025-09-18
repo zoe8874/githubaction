@@ -28,3 +28,8 @@ jobs:
       # fix this issue
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
+      
+      - name: Upload to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          path: ./dist
