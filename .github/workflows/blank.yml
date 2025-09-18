@@ -1,4 +1,4 @@
-name: Deployment for Vue application
+name: Deploy Vue (Vite) app to GitHub Pages
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - main
 
 permissions:
+  contents: read
   pages: write
   id-token: write
 
@@ -13,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node
@@ -25,7 +26,8 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: npm run build
+        run: |
+          npm run build -- --base=/githubaction/
 
       - name: Upload build output
         uses: actions/upload-pages-artifact@v3
