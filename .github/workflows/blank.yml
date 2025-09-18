@@ -21,12 +21,14 @@ jobs:
 
       - name: Install packages
         run: npm i
+        
 
       - name: Build project
         run: npm run build
 
       # fix this issue
       - name: Upload to GitHub Pages
-        uses: actions/deploy-pages@v4
+        uses: upload-pages-artifact@v4
         with:
           path: ./dist
+          uses: actions/deploy-pages@v4
