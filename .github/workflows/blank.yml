@@ -27,9 +27,9 @@ jobs:
 
       - name: Build project
         run: |
-          npm run build -- --base=/githubaction/
+          npm run build -- --base=/githubaction/ ## macht das es mit /githubaction/ klapt
 
-      - name: Upload build output
+      - name: Upload build 
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
