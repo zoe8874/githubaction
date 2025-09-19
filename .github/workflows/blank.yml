@@ -1,9 +1,8 @@
-name: Deploy Vue (Vite) app to GitHub Pages
+name: Deployment for vue application
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 permissions:
   contents: read
@@ -11,36 +10,36 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    # Damit kann ich den Pages Link in Actions sehen
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup node
+        uses: actions/setup-node@v5
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Install packages
         run: npm ci
 
       - name: Build project
-        run: |
-          npm run build -- --base=/githubaction/
+        run: npm run build
 
-      - name: Upload build output
+      # 1) ZUERST das Build als Pages-Artifact hochladen
+      - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
+      # 2) DANN das Artifact deployen
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+ 
